@@ -13,13 +13,13 @@ import starling.display.Image;
  */
 class EntityCreator 
 {
-	private var gameEngine:GameEngine;
-	public function new(engine:GameEngine) 
+	private var manager:EntityManager;
+	public function new(manager:EntityManager) 
 	{
-		gameEngine = engine;
+		this.manager = manager;
 	}
 	
-	public function createBackgroung(x:Int):Enti
+	public function createBackgroung(x:Int):Entity
 	{
 		var bg = new Entity();
 		
@@ -33,14 +33,16 @@ class EntityCreator
 		velocity.velocityX = -1;
 		velocity.angularVelocity = 0;
 		
-		var display = new DisplayComponent();
-		var texture = ResourceWarehouse.getInstance().getTexture("bg");
-		display.view = new Image(texture);
+		//var display = new DisplayComponent();
+		//var texture = ResourceWarehouse.getInstance().getTexture("bg");
+		//display.view = new Image(texture);
 		
 		
 		bg.add(position);
 		bg.add(velocity);
-		bg.add(display);
+		//bg.add(display);
+		
+		manager.add(bg);
 		
 		return bg;
 	}

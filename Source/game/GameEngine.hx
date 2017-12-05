@@ -2,6 +2,7 @@ package game;
 import game.components.DisplayComponent;
 import game.entity.Entity;
 import game.entity.EntityCreator;
+import game.entity.EntityManager;
 import game.systems.MoveSystem;
 import game.systems.RenderSystem;
 import game.systems.common.SystemManager;
@@ -20,28 +21,33 @@ class GameEngine
 	private var mainScene:DisplayObjectContainer;
 	private var entityCreator:EntityCreator;
 	
+	private var entityManager:EntityManager;
+	
 	public function new(mainScene:DisplayObjectContainer) 
 	{
 		this.mainScene = mainScene;
 		
-		entityCreator = new EntityCreator(this);
+		entityManager = new EntityManager();
+		entityCreator = new EntityCreator(entityManager);
 		systemManager = new SystemManager();
 		
-		registerSytems();
 		prepare();
+		registerSytems();
 	}
 	
 	function registerSytems() 
 	{
-		systemManager.addSystem(new MoveSystem());
-		systemManager.addSystem(new RenderSystem(mainScene));
+		//var entityManager = new EntityManager();
+		
+		systemManager.addSystem(new MoveSystem(entityManager));
+		//systemManager.addSystem(new RenderSystem(mainScene));
 	}
 	
 	public function prepare():Void
 	{
 		var bgEntity1 = entityCreator.createBackgroung(0);
-		var displ:DisplayComponent = (cast(bgEntity1.get("DisplayComponent"), DisplayComponent));
-		var bgEntity2 = entityCreator.createBackgroung(Std.int(displ.view.width));
+		//var displ:DisplayComponent = (cast(bgEntity1.get("DisplayComponent"), DisplayComponent));
+		//var bgEntity2 = entityCreator.createBackgroung(Std.int(displ.view.width));
 		
 		//systemManager.addEnitytToSystem(bgEntity1, "MoveSystem");
 		//systemManager.addEnitytToSystem(bgEntity2, "MoveSystem");

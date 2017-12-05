@@ -17,21 +17,21 @@ class Entity
 
 	public function add(component:IComponent):Void
 	{
-		if(!has(component)) components.add(component);
+		if(!has(component.id)) components.add(component);
 		else throw('$component already added to Entity');
 	}
 
 	public function remove(component:IComponent):Void
 	{
-		if (has(component)) components.remove(component);
+		if (has(component.id)) components.remove(component);
 		else throw('Not found $component in Entity');
 	}
 	
-	public function has(component:IComponent):Bool
+	public function has(key:String):Bool
 	{
 		for (comp in components)
 		{
-			if (comp.id == component.id)
+			if (comp.id == key)
 			{
 				return true;
 			}
@@ -40,7 +40,20 @@ class Entity
 		return false;
 	}
 	
-	public function get(id:Entity):IComponent
+	public function hasComponents(keyList:Array<String>):Bool
+	{
+		for (key in keyList)
+		{
+			if (!has(key))
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public function get(id:String):IComponent
 	{
 		for (comp in components)
 		{

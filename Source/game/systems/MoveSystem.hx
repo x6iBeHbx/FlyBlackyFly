@@ -2,6 +2,7 @@ package game.systems;
 import game.components.PointComponent;
 import game.components.VelocityComponent;
 import game.entity.Entity;
+import game.entity.EntityManager;
 import game.systems.iterfaces.ISystem;
 
 /**
@@ -12,17 +13,20 @@ class MoveSystem implements ISystem
 {
 	public var id:String = "MoveSystem";
 	
-	private var entities:List<String>;
-	public function new() 
+	private var kyesForFilter:Array<String>;
+	private var entities:Array<Entity>;
+	private var entityManager:EntityManager;
+	
+	public function new(entityManager:EntityManager) 
 	{
-		entities = new List<String>();
+		kyesForFilter = ["PointComponent", "VelocityComponent"];
+		this.entityManager = entityManager;
 		
-		
+		updateEntitySet();
 	}
 	
 	public function update(time:Int)
 	{
-		
 		for (entity in entities)
 		{
 			var point:PointComponent = cast(entity.get("PointComponent"), PointComponent);
@@ -36,18 +40,8 @@ class MoveSystem implements ISystem
 		}
 	}
 	
-	public function add(entity:String):Void
+	public function updateEntitySet():Void
 	{
-		entities.add(entity);
-	}
-	
-	public function remove(entity:String):Void
-	{
-		entities.remove(entity);
-	}
-	
-	public function has(entity:String):Bool
-	{
-		
+		entities = entityManager.filterByComponents(kyesForFilter);
 	}
 }

@@ -1,6 +1,8 @@
 package game.systems;
 
 import game.GameEngine;
+import game.entity.EntityCreator;
+import game.entity.EntityManager;
 import game.systems.common.SystemManager;
 import game.systems.iterfaces.ISystem;
 
@@ -11,10 +13,14 @@ import game.systems.iterfaces.ISystem;
 class BackgroundSystem implements ISystem 
 {
 	public var id:String = "BackgroundSystem";
+
 	
-	public var entitiesKeyList:List<String>;
+	public var entitiesKeyList:Array<String>;
 	
+	private var entityManager:EntityManager;
+	private var enittyCreator:EntityCreator;
 	private var systemManager:SystemManager;
+	
 	private inline var deltaForBackGeneration = 50; 
 	
 	public function new(systemManager:GameEngine) 
@@ -34,20 +40,5 @@ class BackgroundSystem implements ISystem
 				
 			}
 		}
-	}
-	
-	public function add(entity:String):Void
-	{
-		entities.add(entity);
-	}
-	
-	public function remove(entity:String):Void
-	{
-		entities.remove(entity);
-	}
-	
-	public function has(entity:String):Bool
-	{
-		
 	}
 }

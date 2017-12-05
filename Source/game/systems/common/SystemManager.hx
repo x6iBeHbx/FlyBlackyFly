@@ -29,24 +29,9 @@ class SystemManager
 		systems.remove(key);
 	}
 	
-	public function addEnitytToSystem(entity:Entity, systemKey:String):Void
+	public function clear():Void
 	{
-		var system = getSystem(systemKey);
-		system.add(entity);
-	}
-	
-	public function removeEntityFromSystem(entity:Entity, systemKey:String):Void
-	{
-		var system = getSystem(systemKey);
-		system.remove(entity);
-	}
-	
-	public function removeEntityFromAllSysytem(entity:Entity):Void
-	{
-		for (system in systems)
-		{
-			system.remove(entity);
-		}
+		systems = null;
 	}
 	
 	private function set_systems(map:Map<String ,ISystem>):Map<String ,ISystem>

@@ -22,9 +22,12 @@ class LoadResource extends EventDispatcher
 
 	public function load(path:String):Void
 	{
-		var urlLoader = new URLLoader();
-		urlLoader.addEventListener(Event.COMPLETE, resLoaded);
-		urlLoader.load(new URLRequest(path));
+		//temp
+		loadComplete(1);
+		
+		//var urlLoader = new URLLoader();
+		//urlLoader.addEventListener(Event.COMPLETE, resLoaded);
+		//urlLoader.load(new URLRequest(path));
 	}
 	
 	private function resLoaded(e:Event):Void 

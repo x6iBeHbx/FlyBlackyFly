@@ -7,14 +7,14 @@ package game.entity;
 class EntityManager 
 {
 
-	private var entities:Map<Entity, Entity>;
+	private var entities:Map<String, Entity>;
 	private var iterator:UInt = 0;
 	public function new() 
 	{
-		
+		entities = new Map<String, Entity>();
 	}
 	
-	public function add(entity:Entity, key:Entity = ""):Void
+	public function add(entity:Entity, key:String = ""):Void
 	{
 		if (key == "") 
 		{
@@ -26,22 +26,36 @@ class EntityManager
 		}
 	}
 	
-	public function remove(key:Entity):Void
+	public function remove(key:String):Void
 	{
 		entities.remove(key);
 	}
 	
-	public function has(key:Entity):Bool
+	public function has(key:String):Bool
 	{
 		return entities.exists(key);
 	}
 	
-	public function get(key:Entity):Bool
+	public function get(key:String):Entity
 	{
 		return entities.get(key);
 	}
 	
-	public function filterByKyes(keyArray:Array<Entity>):Array<Entity>
+	public function filterByComponents(keyArray:Array<String>):Array<Entity>
+	{
+		var list = new Array<Entity>();
+		for (entity in entities)
+		{
+			if (entity.hasComponents(keyArray))
+			{
+				list.push(entity);
+			}
+		}
+		
+		return list;
+	}
+	
+	public function filterByKyes(keyArray:Array<String>):Array<Entity>
 	{
 		var array = new Array<Entity>();
 		for (key in keyArray)

@@ -45,6 +45,7 @@ class Game extends Sprite
 		
 		//this.addChild(new Image(texture));
 		
+				
 		gameEngine = new GameEngine(this);
 		this.addEventListener(Event.ENTER_FRAME, tick);
 	}

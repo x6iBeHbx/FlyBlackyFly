@@ -1,5 +1,7 @@
 package game.systems.iterfaces;
 import game.entity.Entity;
+import game.entity.EntityCreator;
+import game.entity.EntityManager;
 
 /**
  * @author Andrii Andriushchenko
@@ -8,10 +10,8 @@ interface ISystem
 {
 	public var id:String;
 	
-	private var entitiesKeyList:List<String>;
+	private var entityManager:EntityManager;
+	private var entities:Array<Entity>;
 	
 	public function update(time:Int):Void;
-	public function add(key:Entity):Void;
-	public function remove(key:Entity):Void;
-	public function has(key:Entity):Bool;
 }
