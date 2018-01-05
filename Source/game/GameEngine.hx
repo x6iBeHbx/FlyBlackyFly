@@ -3,10 +3,18 @@ import game.components.DisplayComponent;
 import game.entity.Entity;
 import game.entity.EntityCreator;
 import game.entity.EntityManager;
+import game.systems.BackgroundSystem;
+import game.systems.ItemGenerationSystem;
 import game.systems.MoveSystem;
+import game.systems.PlayerControlSystem;
+import game.systems.ItemCollisionSystem;
 import game.systems.RenderSystem;
+import game.systems.UpdateCoinsSystem;
 import game.systems.common.SystemManager;
 import game.systems.iterfaces.ISystem;
+import openfl.display.FPS;
+import openfl.display.Tilemap;
+import openfl.utils.Timer;
 import starling.display.DisplayObjectContainer;
 import starling.display.Sprite;
 
@@ -25,6 +33,7 @@ class GameEngine
 	
 	public function new(mainScene:DisplayObjectContainer) 
 	{
+		
 		this.mainScene = mainScene;
 		
 		entityManager = new EntityManager();
@@ -37,30 +46,30 @@ class GameEngine
 	
 	function registerSytems() 
 	{
-		//var entityManager = new EntityManager();
-		
+		systemManager.addSystem(new BackgroundSystem(entityManager, entityCreator, systemManager));
 		systemManager.addSystem(new MoveSystem(entityManager));
-		//systemManager.addSystem(new RenderSystem(mainScene));
+		systemManager.addSystem(new UpdateCoinsSystem(entityManager));
+		systemManager.addSystem(new ItemGenerationSystem(entityManager, entityCreator, systemManager));
+		systemManager.addSystem(new ItemCollisionSystem(entityManager, mainScene, systemManager));
+		systemManager.addSystem(new RenderSystem(entityManager, mainScene));
+		systemManager.addSystem(new PlayerControlSystem(entityManager, mainScene));
 	}
 	
 	public function prepare():Void
 	{
-		var bgEntity1 = entityCreator.createBackgroung(0);
-		//var displ:DisplayComponent = (cast(bgEntity1.get("DisplayComponent"), DisplayComponent));
-		//var bgEntity2 = entityCreator.createBackgroung(Std.int(displ.view.width));
+		entityCreator.createBackgroung(0, 0, "bg1");
+		entityCreator.createBackgroung(720, 0, "bg2");
 		
-		//systemManager.addEnitytToSystem(bgEntity1, "MoveSystem");
-		//systemManager.addEnitytToSystem(bgEntity2, "MoveSystem");
+		entityCreator.createPlayer(100, 100, "player");
 		
-		//systemManager.addEnitytToSystem(bgEntity1, "RenderSystem");
-		//systemManager.addEnitytToSystem(bgEntity2, "RenderSystem");
+		entityCreator.createText("coinsText", "0", 100, 10);
 	}
 	
 	public function update(time:Int):Void
 	{
-		for (system in systemManager.systems)
+		if (systemManager.allSystemUpdated) 
 		{
-			system.update(time);
+			systemManager.update(time);
 		}
 	}
 }

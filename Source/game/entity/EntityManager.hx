@@ -1,4 +1,7 @@
 package game.entity;
+import game.utils.DCCList;
+import openfl.utils.Dictionary;
+import openfl.utils.Timer;
 
 /**
  * ...
@@ -7,65 +10,93 @@ package game.entity;
 class EntityManager 
 {
 
-	private var entities:Map<String, Entity>;
+	private var entities:Array<Entity>;
+	private var kyes:Array<String>;
 	private var iterator:UInt = 0;
+	private var generatedKey:String;
+	
 	public function new() 
 	{
-		entities = new Map<String, Entity>();
+		entities = new Array<Entity>();
+		kyes = new Array<String>();
 	}
 	
-	public function add(entity:Entity, key:String = ""):Void
+	public function add(entity:Entity, key:String = "", needGenerateKey:Bool = false):Void
 	{
-		if (key == "") 
+		if (key == "" || needGenerateKey) 
 		{
-			iterator++;
-			entities.set(Std.string(iterator), entity);
+			
+			generatedKey = key + Std.string(Date.now().getTime());
+			entity.id = Std.string(generatedKey);
+			kyes.push(Std.string(generatedKey));
+			entities.push(entity);
 		}else
 		{
-			entities.set(key, entity);
+			entity.id = key;
+			kyes.push(key);
+			entities.push(entity);
 		}
 	}
 	
-	public function remove(key:String):Void
+	public function remove(entity:Entity):Void
 	{
-		entities.remove(key);
+		//var index = kyes.indexOf(key);
+		//entities[index];
+		entities.remove(entity);
+		entity = null;
+		trace(entities.length);
 	}
 	
 	public function has(key:String):Bool
 	{
-		return entities.exists(key);
+		return kyes.indexOf(key) != -1;
 	}
 	
 	public function get(key:String):Entity
 	{
-		return entities.get(key);
+		var index = kyes.indexOf(key);
+		return entities[index];
 	}
 	
-	public function filterByComponents(keyArray:Array<String>):Array<Entity>
+	public function filterByComponents(keyArray:Array<String>):DCCList<Entity>
 	{
-		var list = new Array<Entity>();
+		var list = new DCCList<Entity>();
 		for (entity in entities)
 		{
 			if (entity.hasComponents(keyArray))
 			{
-				list.push(entity);
+				list.add(entity);
 			}
 		}
 		
 		return list;
 	}
 	
-	public function filterByKyes(keyArray:Array<String>):Array<Entity>
+	public function filterByKyes(keyArray:Array<String>):DCCList<Entity>
 	{
-		var array = new Array<Entity>();
+		var list = new DCCList<Entity>();
 		for (key in keyArray)
 		{
 			if (has(key))
 			{
-				array.push(get(key));
+				list.add(get(key));
 			}
 		}
 		
-		return array;
+		return list;
+	}
+	
+	public function filterByEReg(r:EReg):DCCList<Entity>
+	{
+		var list = new DCCList<Entity>();
+		for (entity in entities)
+		{
+			if (r.match(entity.id))
+			{
+				list.add(entity);
+			}
+		}
+		
+		return list;
 	}
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:3e686dd1ab8d98bea519aa21e96b62e1:f609d272ee03d94b7ed3889258eba647:7d7b123576413aef98f17461900ed351$ -->
+<TextureAtlas imagePath="GameAtlas.png" width="789" height="360">
+    <SubTexture name="bg" x="0" y="0" width="720" height="360"/>
+    <SubTexture name="item" x="720" y="0" width="29" height="29"/>
+    <SubTexture name="player" x="749" y="0" width="40" height="40"/>
+</TextureAtlas>

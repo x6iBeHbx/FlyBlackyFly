@@ -22,20 +22,15 @@ class LoadResource extends EventDispatcher
 
 	public function load(path:String):Void
 	{
-		//temp
-		loadComplete(1);
-		
-		//var urlLoader = new URLLoader();
-		//urlLoader.addEventListener(Event.COMPLETE, resLoaded);
-		//urlLoader.load(new URLRequest(path));
+		var urlLoader = new URLLoader();
+		urlLoader.addEventListener(Event.COMPLETE, resLoaded);
+		urlLoader.load(new URLRequest(path));
 	}
 	
 	private function resLoaded(e:Event):Void 
 	{
 		var loader = cast(e.target, URLLoader);
 		var json = Json.parse(loader.data);
-		
-		//sendNotification(GeneralNotificationEnum.PREPARE_REEL_ENGINE_COMMAND, json);
 		
 		trace(json.resPath);
 		ResourceWarehouse.getInstance().enqueue(json.resPath);
@@ -47,9 +42,5 @@ class LoadResource extends EventDispatcher
 		if (ratio >= 1){
 			loaded();
 		}
-	}
-	
-	private function loadFinished():Void{
-		
 	}
 }

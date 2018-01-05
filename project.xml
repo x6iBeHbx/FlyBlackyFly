@@ -4,11 +4,12 @@
 	<meta title="FlyBlackyFly" package="com.sample.flyblackyfly" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="FlyBlackyFly" />
 	
+	<window width="720" height="360" unless="mobile" />
 	<source path="Source" />
 	
 	<haxelib name="openfl" />
 	<haxelib name="starling" />
 	
-	<assets path="Assets" rename="assets" />
+	<assets path="Assets" rename="assets" embed="false"/>
 	
 </project>

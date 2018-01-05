@@ -9,6 +9,8 @@ import game.systems.iterfaces.ISystem;
 class SystemManager 
 {
 	public var systems(default, null):Map<String ,ISystem>;
+	public var allSystemUpdated:Bool = true;
+	
 	public function new() 
 	{
 		systems = new Map<String ,ISystem>();
@@ -43,5 +45,25 @@ class SystemManager
 	private function get_systems():Map<String ,ISystem>
 	{
 		return systems;
+	}
+	
+	public function updateEntitiesSetForAll():Void
+	{
+		for (system in systems)
+		{
+			system.updateEntitySet();
+		}
+	}
+	
+	public function update(time:Int):Void
+	{
+		allSystemUpdated = false;
+		
+		for (system in systems)
+		{
+			system.update(time);
+		}
+		
+		allSystemUpdated = true;
 	}
 }

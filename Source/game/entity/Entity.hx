@@ -9,7 +9,9 @@ class Entity
 {
 
 	private var components:List<IComponent>;
-
+	
+	public var id:String;
+	
 	public function new()
 	{
 		components = new List<IComponent>();
@@ -64,5 +66,10 @@ class Entity
 		}
 		
 		return null;
+	}
+	
+	public function destroy():Void
+	{
+		components.clear();
 	}
 }

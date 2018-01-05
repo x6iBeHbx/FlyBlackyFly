@@ -9,6 +9,7 @@ import starling.display.Quad;
 import starling.display.Sprite;
 import starling.events.Event;
 import starling.events.KeyboardEvent;
+import starling.textures.Texture;
 import starling.utils.AssetManager;
 import starling.utils.Color;
 
@@ -21,6 +22,9 @@ class Game extends Sprite
 
 	private var gameEngine:GameEngine;
 	
+	var i = 0;
+	var texture:Texture;
+	
 	public function new() 
 	{
 		super();
@@ -31,7 +35,7 @@ class Game extends Sprite
 	{
 		//Need start prelaoder
 		var loader = new LoadResource(ladedFinished);
-		loader.load("json/StartGameConfig.json");
+		loader.load("assets/json/StartGameConfig.json");
 		
 		//welcomeScreen = new Welcome();
 		//addChild(welcomeScreen);
@@ -41,8 +45,8 @@ class Game extends Sprite
 	private function ladedFinished()
 	{
 		
-		//var texture = ResourceWarehouse.getInstance().getTexture("bg");
-		
+		//texture = ResourceWarehouse.getInstance().getTexture("bg");
+		//
 		//this.addChild(new Image(texture));
 		
 				
