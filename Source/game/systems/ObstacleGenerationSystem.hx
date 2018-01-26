@@ -12,9 +12,9 @@ import game.utils.DCCList;
  * ...
  * @author Andrii Andriushchenko
  */
-class ItemGenerationSystem implements ISystem 
+class ObstacleGenerationSystem implements ISystem 
 {
-	public var id:String = "ItemGenerationSystem";
+	public var id:String = "ObstacleGenerationSystem";
 	public var entityManager:EntityManager;
 	public var entities:DCCList<Entity>;
 	
@@ -34,18 +34,19 @@ class ItemGenerationSystem implements ISystem
 	public function update(time:Int):Void 
 	{
 		random = Math.random();
-		if (random < time/10)
+		if (random < time/20)
 		{
 			randomGenerate();
+			//entityCreator.createItem(730, Std.int(Math.random()*320));
 			systemManager.updateEntitiesSetForAll();
 		}
 	}
 	
 	private function randomGenerate():Void
 	{
-		entityCreator.createItem(730, Std.int(Math.random()*320));
+		entityCreator.createObstacle(730, Std.int(Math.random()*320));
 	}
-		
+	
 	public function updateEntitySet():Void 
 	{
 	}

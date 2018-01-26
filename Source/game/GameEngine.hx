@@ -4,8 +4,10 @@ import game.entity.Entity;
 import game.entity.EntityCreator;
 import game.entity.EntityManager;
 import game.systems.BackgroundSystem;
+import game.systems.DecreaseLiveSystem;
 import game.systems.ItemGenerationSystem;
 import game.systems.MoveSystem;
+import game.systems.ObstacleGenerationSystem;
 import game.systems.PlayerControlSystem;
 import game.systems.ItemCollisionSystem;
 import game.systems.RenderSystem;
@@ -50,7 +52,9 @@ class GameEngine
 		systemManager.addSystem(new MoveSystem(entityManager));
 		systemManager.addSystem(new UpdateCoinsSystem(entityManager));
 		systemManager.addSystem(new ItemGenerationSystem(entityManager, entityCreator, systemManager));
+		systemManager.addSystem(new ObstacleGenerationSystem(entityManager, entityCreator, systemManager));
 		systemManager.addSystem(new ItemCollisionSystem(entityManager, mainScene, systemManager));
+		systemManager.addSystem(new DecreaseLiveSystem(entityManager, systemManager));
 		systemManager.addSystem(new RenderSystem(entityManager, mainScene));
 		systemManager.addSystem(new PlayerControlSystem(entityManager, mainScene));
 	}
@@ -62,7 +66,8 @@ class GameEngine
 		
 		entityCreator.createPlayer(100, 100, "player");
 		
-		entityCreator.createText("coinsText", "0", 100, 10);
+		entityCreator.createCoinsText("coinsText", 0, 100, 10);
+		entityCreator.createLiveText("liveText", 3, 150, 10);
 	}
 	
 	public function update(time:Int):Void

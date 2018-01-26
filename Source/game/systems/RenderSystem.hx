@@ -53,10 +53,9 @@ class RenderSystem implements ISystem
 	public function updateEntitySet():Void
 	{
 		entities = entityManager.filterByComponents(kyesForFilter);
-		
+		trace(entities.length);
 		for (entity in entities)
 		{
-			//trace(entity.id);
 			var display:DisplayComponent = cast(entity.get("DisplayComponent"), DisplayComponent);
 			container.addChild(display.view);
 		}

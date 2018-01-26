@@ -4,6 +4,7 @@ import game.GameEngine;
 import game.common.assets.ResourceWarehouse;
 import game.components.CoinsComponent;
 import game.components.DisplayComponent;
+import game.components.LiveComponent;
 import game.components.PointComponent;
 import game.components.RectangleComponent;
 import game.components.VelocityComponent;
@@ -67,8 +68,6 @@ class EntityCreator
 		position.y = y;
 		position.rotation = 0;
 		
-		var tempPl = new Quad(40, 40, 0xFF0000);
-		
 		var display = new DisplayComponent();
 		var texture = ResourceWarehouse.getInstance().getTexture('player');
 		display.view = new Image(texture);
@@ -76,7 +75,6 @@ class EntityCreator
 		var rectangle = new RectangleComponent();
 		rectangle.width = Std.int(display.view.width);
 		rectangle.height = Std.int(display.view.height);
-		
 		
 		player.add(position);
 		player.add(display);
@@ -103,23 +101,56 @@ class EntityCreator
 		var display = new DisplayComponent();
 		var texture = ResourceWarehouse.getInstance().getTexture('item');
 		display.view = new Image(texture);
+		display.view.x = x;
+		display.view.y = y;
 		
 		var rectangle = new RectangleComponent();
 		rectangle.width = Std.int(display.view.width);
 		rectangle.height = Std.int(display.view.height);
-		
 		
 		item.add(position);
 		item.add(velocity);
 		item.add(display);
 		item.add(rectangle);
 		
-		
 		manager.add(item, "item", true);
 		return item;
 	}
 	
-	public function createText(id:String, txt:String, x:Int = 0, y:Int = 0, rotation:Int = 0)
+	public function createObstacle(x:Int, y:Int):Entity
+	{
+		var obstacle = new Entity();
+		
+		var position = new PointComponent();
+		position.x = x;
+		position.y = y;
+		position.rotation = 0;
+		
+		var velocity = new VelocityComponent();
+		velocity.velocityY = 0;
+		velocity.velocityX = -12;
+		velocity.angularVelocity = 0;
+		
+		var display = new DisplayComponent();
+		var texture = ResourceWarehouse.getInstance().getTexture('obstacle');
+		display.view = new Image(texture);
+		display.view.x = x;
+		display.view.y = y;
+		
+		var rectangle = new RectangleComponent();
+		rectangle.width = Std.int(display.view.width);
+		rectangle.height = Std.int(display.view.height);
+		
+		obstacle.add(position);
+		obstacle.add(velocity);
+		obstacle.add(display);
+		obstacle.add(rectangle);
+		
+		manager.add(obstacle, "obstacle", true);
+		return obstacle;
+	}
+	
+	public function createCoinsText(id:String, value:Int, x:Int = 0, y:Int = 0, rotation:Int = 0):Entity
 	{
 		var text = new Entity();
 		text.id = id;
@@ -130,15 +161,40 @@ class EntityCreator
 		position.rotation = rotation;
 		
 		var coinsComponent = new CoinsComponent();
-		coinsComponent.coins = 0;
+		coinsComponent.coins = value;
 		
 		var textComponent = new DisplayComponent();
-		textComponent.view = new TextField(50, 20, txt);
+		textComponent.view = new TextField(50, 20, Std.string(value));
 		
 		text.add(position);
 		text.add(coinsComponent);
 		text.add(textComponent);
 		
+		
+		manager.add(text, id);
+		
+		return text;
+	}
+	
+	public function createLiveText(id:String, value:Int, x:Int = 0, y:Int = 0, rotation:Int = 0):Entity
+	{
+		var text = new Entity();
+		text.id = id;
+		
+		var position = new PointComponent();
+		position.x = x;
+		position.y = y;
+		position.rotation = rotation;
+		
+		var liveComponent = new LiveComponent();
+		liveComponent.lives = value;
+		
+		var textComponent = new DisplayComponent();
+		textComponent.view = new TextField(50, 20, Std.string(value));
+		
+		text.add(position);
+		text.add(liveComponent);
+		text.add(textComponent);
 		
 		manager.add(text, id);
 		

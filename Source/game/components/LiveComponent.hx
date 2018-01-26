@@ -8,7 +8,7 @@ import game.components.interfaces.IComponent;
  */
 class LiveComponent implements IComponent 
 {
-	public var id:String;
+	public var id:String = "LiveComponent";
 	public var lives:Int;
 	
 	public function new() 

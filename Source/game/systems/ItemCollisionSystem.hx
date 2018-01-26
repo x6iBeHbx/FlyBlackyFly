@@ -1,6 +1,7 @@
 package game.systems;
 import game.components.CoinsComponent;
 import game.components.DisplayComponent;
+import game.components.LiveComponent;
 import game.components.PointComponent;
 import game.components.RectangleComponent;
 import game.entity.Entity;
@@ -22,6 +23,7 @@ class ItemCollisionSystem implements ISystem
 	public var id:String = "CollisionItemSystem";
 
 	private var entities:DCCList<Entity>;
+	private var obstacleEntities:DCCList<Entity>;
 	private var playerEntity:Entity;
 	private var coinsEntity:Entity;
 	
@@ -32,7 +34,7 @@ class ItemCollisionSystem implements ISystem
 	private var point:PointComponent;
 	private var rectangleComponent:RectangleComponent;
 	private var display:DisplayComponent;
-	
+	private var liveComponent:LiveComponent;
 	
 	
 	public function new(entityManager:EntityManager, container:DisplayObjectContainer, systemManager:SystemManager) 
@@ -41,6 +43,7 @@ class ItemCollisionSystem implements ISystem
 		this.container = container;
 		this.systemManager = systemManager;
 		
+		playerEntity = entityManager.get("player");
 		updateEntitySet();
 	}
 	
@@ -53,26 +56,58 @@ class ItemCollisionSystem implements ISystem
 			rectangleComponent = cast(entity.get("RectangleComponent"), RectangleComponent);
 			display = cast(entity.get("DisplayComponent"), DisplayComponent);
 			
-			if (display.view.bounds.intersects(cast(playerEntity.get("DisplayComponent"), DisplayComponent).view.bounds) ||	point.x < 0)
+			if (display.view.bounds.intersects(cast(playerEntity.get("DisplayComponent"), DisplayComponent).view.bounds))
 			{
-				//trace(entity.id);
-				entityManager.remove(entity);
-				container.removeChild(display.view);
-				systemManager.updateEntitiesSetForAll();
-				
+				removeItem(entity);
 				udpateCoins();
 			}
+			else if (point.x < 0)
+			{
+				removeItem(entity);
+			}
+			
+		}
+		
+		for (obstacleEntity in obstacleEntities)
+		{
+			point = cast(obstacleEntity.get("PointComponent"), PointComponent);
+			rectangleComponent = cast(obstacleEntity.get("RectangleComponent"), RectangleComponent);
+			display = cast(obstacleEntity.get("DisplayComponent"), DisplayComponent);
+			
+			if (display.view.bounds.intersects(cast(playerEntity.get("DisplayComponent"), DisplayComponent).view.bounds))
+			{
+				removeItem(obstacleEntity);
+				decreaseLive();
+				//systemManager.clear();
+			}
+			else if (point.x < 0)
+			{
+				removeItem(obstacleEntity);
+			}
+			
 		}
 	}
 	
 	public function updateEntitySet():Void
 	{
 		entities = entityManager.filterByEReg(~/item/);
-		playerEntity = entityManager.get("player");
+		obstacleEntities = entityManager.filterByEReg(~/obstacle/);
+	}
+	
+	private function removeItem(entity:Entity)
+	{
+		entityManager.remove(entity);
+		systemManager.updateEntitiesSetForAll();
+		container.removeChild(display.view);
 	}
 	
 	private function udpateCoins():Void
 	{
 		cast(systemManager.getSystem("UpdateCoinsSystem"), UpdateCoinsSystem).coinsUdpate();
+	}
+	
+	private function decreaseLive():Void
+	{
+		cast(systemManager.getSystem("DecreaseLiveSystem"), DecreaseLiveSystem).decreaseLive();
 	}
 }

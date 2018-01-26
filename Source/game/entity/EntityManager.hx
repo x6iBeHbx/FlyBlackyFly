@@ -43,8 +43,7 @@ class EntityManager
 		//var index = kyes.indexOf(key);
 		//entities[index];
 		entities.remove(entity);
-		entity = null;
-		trace(entities.length);
+		//trace(entities.length);
 	}
 	
 	public function has(key:String):Bool

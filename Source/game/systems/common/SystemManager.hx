@@ -33,7 +33,10 @@ class SystemManager
 	
 	public function clear():Void
 	{
-		systems = null;
+		for (system in systems)
+		{
+			systems.remove(system.id);
+		}
 	}
 	
 	private function set_systems(map:Map<String ,ISystem>):Map<String ,ISystem>
